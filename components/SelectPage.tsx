@@ -8,7 +8,8 @@ export default function SelectPage() {
     const [loading, setLoading] = React.useState(true);
     const [data, setData] = React.useState<Page[]>([]);
     const router = useRouter();
-    React.useEffect(() => {
+    const getPages = async () => {
+        setLoading(true);
         const url = `https://cdn.contentstack.io/v3/content_types/page/entries?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}&only[BASE][]=title&only[BASE][]=url`;
         fetch(url, {
             headers: {
@@ -26,7 +27,9 @@ export default function SelectPage() {
             setData(d);
             setLoading(false);
         });
-
+    };
+    React.useEffect(() => {        
+        getPages();
     }, []);
 
     return (
@@ -50,7 +53,10 @@ export default function SelectPage() {
                     </select>}
                 </div>
 
-                <button className='text-white'>Reload</button>
+                <button className='text-white' onClick={()=>{
+                    getPages();
+                    
+                }} disabled={loading}>Reload</button>
 
             </div>
         </div>
