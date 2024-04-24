@@ -46,15 +46,13 @@ export const getContent = <T extends Entry>(
   });
 };
 
-export const getAssetByTag = <T extends Asset>(
-  locale: string,
+export const getAssetByTag = <T extends Asset>(  
   tag: string
 ): Promise<T | null | AssetError> => {
   return new Promise(async (resolve, reject) => {
     const query = Stack.Assets().Query().where("tags", tag).toJSON();
     query.find().then(
       (result: any) => {
-
         console.log("Assets found:", result[0].length);
         if (result[0].length === 0) {
           resolve(null);
@@ -67,9 +65,7 @@ export const getAssetByTag = <T extends Asset>(
         }
 
       },
-      (error) => {
-        // console.error(error);
-        // console.log(error.error_message);
+      (error) => {        
         reject(error.error_message);
       }
     );
