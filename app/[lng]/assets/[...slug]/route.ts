@@ -9,21 +9,16 @@ export async function GET(
   request: NextRequest,
   { params: { slug } }: { params: { slug: string[] } }
 ) {
-  const tagUrl = `${CUSTOM_URL_ROUTE_PREFIX}/${slug.join("/")}`;
-  const tag = `${CUSTOM_URL_PREFIX}${tagUrl}`;
-  
-  console.log("GET</images> request ", request.nextUrl.pathname, slug, tag);
-  
-  const asset = await getAssetByTag<Asset>(tag);
-  if (asset === null) {
-    return notFound();
-  }
-  if ((asset as AssetError).error_message) {
-    return new Response((asset as AssetError).error_message, { status: 500 });
-  }
-  const a = asset as Asset;
-  const res = await fetch(a.url);
-  const response = new Response(res.body);
-  response.headers.set("Content-Type", a.content_type);
-  return response;
+  //TODO: Implement the following logic:
+  //1. Populate the tag from the slug, and according to the requirements
+  //2. Get the asset by url, you can use the available method getAssetByTag 
+  // available in the _sdk/sdk.ts file
+  //3. If the asset is not found, return a 404 response
+  //4. If the asset is found:  
+  //4.1 if more than one asset is found, return a 500 response with an error message
+  // Review the getAssetByTag method in the _sdk/sdk.ts file. You will notice it  returns an AssetError object if more than one asset is found.
+  //4.2 if only one asset is found, return a 200 response with the asset by:
+  //4.2.1 Retrieve the asset using its URL
+  //4.2.2 Return the asset as an asset according to the asset's content type
+  return notFound();  
 }
