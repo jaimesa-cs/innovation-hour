@@ -1,14 +1,17 @@
+import { CUSTOM_URL_PREFIX, DEFAULT_IMAGE_URL } from "@/_sdk/settings";
 import { IQueryParameters, Page } from "@/_sdk/types";
 import { getContent, getUrlFromParams } from "@/_sdk/sdk";
 
-import { DEFAULT_IMAGE_URL } from "@/_sdk/settings";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
+const ct = "page";
+
+// Async function to get the entry
 const getEntry = async (routeParams: any, searchParams?: any) => {
   const {lng} = routeParams;
-  const ct = "page";
+  
+  //query parameters, we filter by locale, content type and url
   const params: IQueryParameters = {
     locale: lng,
     contentType: ct,
@@ -17,15 +20,19 @@ const getEntry = async (routeParams: any, searchParams?: any) => {
     queryParams: [{ key: "url", value: getUrlFromParams(routeParams, ct) }],
   };
   
+  //get the content, calling using the SDK.
   return await getContent<Page>(params);
   
 }
 
+
+// Function to get the custom url, if the asset has a tag with the path, we use it, otherwise we use the url
 function getCustomUrl(lng:string, asset?: any) {  
+  //if there is no asset, we return the default image
   if(!asset) {
     return DEFAULT_IMAGE_URL;
   }
-  const tags = asset.tags.filter((tag: any) => tag.startsWith("path:"));
+  const tags = asset.tags.filter((tag: any) => tag.startsWith(CUSTOM_URL_PREFIX));
   if(tags.length > 0) {    
     return `/${lng}${tags[0].split(":")[1]}`;
   }
@@ -33,8 +40,7 @@ function getCustomUrl(lng:string, asset?: any) {
 }
 
 async function Home({ params }: any) {
-  const page = await getEntry(params);
-  console.log("Page", page);
+  const page = await getEntry(params);  
   const {lng} = params;
   const assetUrl = getCustomUrl(lng, page?.asset);
 

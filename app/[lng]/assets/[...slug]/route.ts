@@ -1,4 +1,5 @@
 import { Asset, AssetError } from "@/_sdk/types";
+import { CUSTOM_URL_PREFIX, CUSTOM_URL_ROUTE_PREFIX } from "@/_sdk/settings";
 
 import { NextRequest } from "next/server";
 import { getAssetByTag } from "@/_sdk/sdk";
@@ -8,9 +9,11 @@ export async function GET(
   request: NextRequest,
   { params: { slug } }: { params: { slug: string[] } }
 ) {
-  const tagUrl = `/assets/${slug.join("/")}`;
-  const tag = `path:${tagUrl}`;
+  const tagUrl = `${CUSTOM_URL_ROUTE_PREFIX}/${slug.join("/")}`;
+  const tag = `${CUSTOM_URL_PREFIX}${tagUrl}`;
+  
   console.log("GET</images> request ", request.nextUrl.pathname, slug, tag);
+  
   const asset = await getAssetByTag<Asset>(tag);
   if (asset === null) {
     return notFound();
