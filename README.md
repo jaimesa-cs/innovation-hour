@@ -40,3 +40,7 @@ Where `[lng]` represents the locale code, i.e. `en-us`, and where slug can be an
 Any request that hits the server and that matches that pattern will be handled by the route above. Next we describe how such requests are handled by the route code and how to leverage the Content Delivery API to retrieve assets based on a tag, which at the end of the day is the mechanism we decided to utilize in the first place.
 
 Some of the requirements that need to be considered, is how the route would handle assets that are not found, and when the request returns more than one asset, in which case we need to determine which one we need to return, or alternatively, return an error. Our route implements the latter.
+
+## SOLUTION ARCHITECTURE
+
+![Solution Architecture](./readme-images/custom-asset-url-architecture.png)
