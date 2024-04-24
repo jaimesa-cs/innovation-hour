@@ -34,8 +34,11 @@ export default function SelectPage() {
 
     return (
         <div className="flex flex-row justify-center  pt-20">
-            <div className="text-s">Available Pages: &nbsp;</div>
-            <div className='text-black'>
+            {loading ? 
+                <>Loading...</>:
+                <>
+                    <div className="text-s">Available Pages: &nbsp;</div>
+                    <div className='text-black'>
                 <div>
                     {!loading && <select
                         title='pages'
@@ -58,7 +61,9 @@ export default function SelectPage() {
                     
                 }} disabled={loading}>Reload</button>
 
-            </div>
+                    </div>
+                </>
+            }
         </div>
     );
 }
